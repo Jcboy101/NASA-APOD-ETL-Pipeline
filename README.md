@@ -35,10 +35,28 @@ The workflow is defined via an Airflow DAG (`nasa_apod_dag.py`) consisting of:
 - Data Extraction via `HttpHook`
 - Data Transformation
 - Data Loading into PostgreSQL
+---
+## Output
+Below is a screenshot from Airflow’s web UI showing a successful run of the DAG (Directed Acyclic Graph). Each task has executed without error, indicating that the end-to-end pipeline — from fetching data to storing the results — completed as expected.
+
+![Screenshot 2025-06-10 212147](https://github.com/user-attachments/assets/51b49ae7-ada3-49bd-b99d-0dbcb8f40f3d)
+
+This DAG ensures:
+
+- Daily execution of the pipeline
+
+- Automatic retries upon failure
+
+- Modularity for easy integration with cloud storage or databases in future version
+
+- The output image and data can be viewed or used for further analysis, visualization, or archival purposes.
+
+
+
 
 ### DAG: `dags/nasa_apod_dag.py`
 
-```python
+```bash
 from airflow.decorators import dag, task
 from airflow.providers.http.hooks.http import HttpHook
 from airflow.providers.postgres.hooks.postgres import PostgresHook
@@ -117,7 +135,7 @@ dag = nasa_apod_dag()
 
 ### `docker-compose.yml`
 
-```yaml
+```bash
 version: "3"
 services:
   postgres:
@@ -155,8 +173,8 @@ volumes:
 ** 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/nasa-airflow-etl.git
-cd nasa-airflow-etl
+git clone https://github.com/jcboy101/NASA-APOD-ETL-Pipeline.git
+cd CD NASA-APOD-ETL-Pipeline
 ```
 **2. Configure Airflow connections**
 
@@ -197,15 +215,6 @@ docker-compose up -d
    docker-compose up -d
    ```
 4. **Access Airflow UI**: Visit `http://<EC2-PUBLIC-IP>:8080` from your browser.
-
----
-
-## 📈 Future Enhancements
-
-- Add more data sources (NASA EPIC, Mars Rover APIs)
-- Build dashboards using Power BI
-- Add unit tests and monitoring
-- Integrate with AWS S3 or Redshift for data lakes
 
 ---
 
